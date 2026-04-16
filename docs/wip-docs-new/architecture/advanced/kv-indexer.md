@@ -200,9 +200,9 @@ For example, consider a prompt with block keys `[B0, B1, B2, B3, B4]` and three 
 ```
 Block keys:   B0    B1    B2    B3    B4
 
-Pod A:        yes   yes   yes   yes   no    → score = 4 blocks
-Pod B:        yes   yes   no    -     -     → score = 2 blocks (chain breaks at B2)
-Pod C:        no    -     -     -     -     → score = 0 blocks (no prefix)
+Pod A:        yes   yes   yes   yes   no    → score = 4.0 (4 blocks)
+Pod B:        yes   yes   no    -     -     → score = 2.0 (2 blocks, chain breaks at B2)
+Pod C:        no    -     -     -     -     → score = 0.0 (no prefix)
 ```
 
 Even if Pod C happened to hold `B3` and `B4`, those entries are unusable without the preceding chain, and the score is zero.
@@ -295,8 +295,8 @@ Top-level parameters of the `precise-prefix-cache-scorer` plugin.
 
 | Field       | Type    | Default | Description                        |
 |:------------|:--------|:--------|:-----------------------------------|
-| `blockSize` | integer | `16`    | Tokens per KV-block.               |
-| `hashSeed`  | string  | `""`    | Seed for the initial FNV-64a hash. |
+| `blockSize` | integer | `16`    | Tokens per KV-block. **Must match** the model server's `--block-size` flag. |
+| `hashSeed`  | string  | `""`    | Seed for the initial FNV-64a hash. **Must align** with `PYTHONHASHSEED` on model server pods. |
 
 ### Indexer
 
@@ -356,6 +356,8 @@ Model servers must be configured to publish KV-Events over ZMQ with a topic of t
 
 For vLLM concretely:
 
+- `PYTHONHASHSEED` **must be set** and align with the indexer's `tokenProcessorConfig.hashSeed`.
+- `--block-size` **must match** the indexer's `tokenProcessorConfig.blockSize`.
 - `--kv-events-config` must enable ZMQ publishing with topic `kv@<pod-ip>:<port>@<model>`.
 
 SGLang uses equivalent configuration; see its KV-events documentation.
