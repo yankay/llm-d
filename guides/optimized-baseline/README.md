@@ -249,6 +249,8 @@ helm install ${GUIDE_NAME} \
 
 ### 2. Deploy the Model Server
 
+For model sources and weight-file caching, see the [Model Loading operations guide](../../docs/operations/model-loading.md).
+
 Apply the Kustomize overlays for your specific backend:
 
 <!-- guide:deploy.modelserver start -->

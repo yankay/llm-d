@@ -35,3 +35,7 @@ Operational best practices, high availability scaling modes, standalone proxy ar
 ### [Async Processor Operations](async-processor.md)
 
 Throughput modeling, concurrency sizing (backed by a measured sweep), container resource sizing, and horizontal scaling for the Async Processor batch-dispatch agent.
+
+### [Model Loading](model-loading.md)
+
+Model sources, node-local and PVC caches, and weight-loading options for llm-d deployments.
